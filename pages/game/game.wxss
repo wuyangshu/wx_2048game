@@ -1,0 +1,57 @@
+/* pages/game/game.wxss */
+.container {
+  width: 100%;
+  height: 100vh;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-btn {
+  width: 200rpx;
+  padding: 20rpx;
+  background: #8f7a66;
+  color: white;
+  border-radius: 20rpx;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
+}
+
+.score {
+  display: flex;
+  font-size: 32rpx;
+  margin: 30rpx 0;
+}
+
+.grid-container {
+  width: 620rpx;
+  height: 620rpx;
+  padding: 20rpx;
+  margin: 40rpx auto;
+  border-radius: 10rpx;
+  background: #bbada0;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.grid-cell {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 6rpx;
+  background: #ccc0b3;
+  position: absolute;
+}
+
+.character-cell {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 6rpx;
+  line-height: 130rpx;
+  font-size: 50rpx;
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  color: white;
+}
