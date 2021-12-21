@@ -4,6 +4,7 @@ const app = getApp()
 
 Page({
   data: {
+    ani: [],
     motto: '进入',
     userInfo: {},
     hasUserInfo: false,
@@ -40,8 +41,42 @@ Page({
     })
   },
   handleGoGame() {
+    console.log(111)
     wx.navigateTo({
       url: '/pages/game/game',
+    })
+    // this.start()
+    // this.animate('.user-motto', [
+    //   {
+    //     translateY: -1000,
+    //     ease: 'ease'
+    //   },
+    //   {
+    //     translateY: 50,
+    //     ease: 'ease',
+    //   },
+    //   {
+    //     translateY: 0,
+    //     ease: 'ease',
+    //   },
+    // ], 1000, function () {
+    //   this.clearAnimation('.user-motto', function () {
+    //     console.log("清除了#container上的属性")
+    //   })
+    // }.bind(this))
+  },
+  start() {
+    console.log('开始动画')
+    let animation = wx.createAnimation({
+      transformOrigin: "50% 50%",
+      duration: 1000,
+      timingFunction: "ease",
+      delay: 0
+    });
+    animation.translate(150, 0).rotate(180).step()
+    animation.opacity(0).scale(0).step()
+    this.setData({
+      ani: animation.export()
     })
   }
 })

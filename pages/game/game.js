@@ -76,15 +76,15 @@ Page({
 
   touchStart(e) {
     this.setData({
-      touchDotX: e.touches[0].pageX 
+      touchDotX: e.touches[0].pageX
     })
     this.setData({
-      touchDotY: e.touches[0].pageY 
+      touchDotY: e.touches[0].pageY
     })
     this.setData({
       interval: setInterval(() => {
         this.setData({
-          time: this.data.time++ 
+          time: this.data.time++
         })
       }, 100)
     })
@@ -106,14 +106,14 @@ Page({
           console.log("左滑=====")
           if (this.moveToLeft()) {
             this.randomNumber()
-            setTimeout(()=>this.isGameOver(), 400)
+            setTimeout(() => this.isGameOver(), 400)
           }
         } else {
           console.log("右滑=====")
           console.log(this.moveToRight())
           if (this.moveToRight()) {
             this.randomNumber()
-            setTimeout(()=>this.isGameOver(), 400)
+            setTimeout(() => this.isGameOver(), 400)
           }
         }
       }
@@ -122,13 +122,13 @@ Page({
           console.log("上滑动=====")
           if (this.moveToTop()) {
             this.randomNumber()
-            setTimeout(()=>this.isGameOver(), 400)
+            setTimeout(() => this.isGameOver(), 400)
           }
         } else {
           console.log("下滑动=====")
           if (this.moveToBottom()) {
             this.randomNumber()
-            setTimeout(()=>this.isGameOver(), 400)
+            setTimeout(() => this.isGameOver(), 400)
           }
         }
       }
@@ -278,6 +278,7 @@ Page({
     // 随机一个数字
     const randomNum = Math.random() < 0.5 ? 2 : 4
     board[randomx][randomy] = randomNum
+    this.showNumberAnimation(randomx, randomy, randomNum)
     this.setData({
       board
     }, () => {
@@ -290,7 +291,7 @@ Page({
   hasSpace() {
     let board = this.data.board
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 4; i++) {
+      for (let j = 0; j < 4; j++) {
         if (board[i][j] === 0) return true
       }
     }
@@ -370,15 +371,47 @@ Page({
   showMoveAnimation(fromx, fromy, tox, toy) {
     let characterList = this.data.characterList
     //创建一个动画实例
-    let animation = wx.createAnimation({
-      duration: 10000,
-      timingFunction: 'linear',
-    })
-    animation.translate(-this.getDistance(tox, toy).top, -this.getDistance(tox, toy).left).step()
-    characterList[fromx * 4 + fromy].animate = animation.export()
-    this.setData({
-      characterList
-    })
+    // let animation = wx.createAnimation({
+    //   duration: 10000,
+    //   timingFunction: 'linear',
+    // })
+    // animation.translate(-this.getDistance(tox, toy).top, -this.getDistance(tox, toy).left).step()
+    // characterList[fromx * 4 + fromy].animate = animation.export()
+    // this.setData({
+    //   characterList
+    // })
+    this.animate(`#cell-${fromx * 4 + fromy}`, [{
+        top: fromx,
+        left: fromy,
+        ease: 'ease'
+      },
+      {
+        top: this.getDistance(tox, toy).top,
+        left: this.getDistance(tox, toy).left,
+        ease: 'ease'
+      },
+    ], 200, function () {
+      this.clearAnimation(`#cell-${fromx * 4 + fromy}`, function () {
+        console.log("清除了属性")
+      })
+    }.bind(this))
+  },
+
+  // 格子出现动画
+  showNumberAnimation(x, y, num) {
+    this.animate(`#cell-${x * 4 + y}`, [{
+        scale: [0, 0],
+        opacity: 0,
+        ease: 'ease'
+      },
+      {
+        scale: [1, 1],
+        opacity: 1,
+        ease: 'ease',
+      },
+    ], 200, function () {
+      this.clearAnimation(`#cell-${x * 4 + y}`)
+    }.bind(this))
   },
 
   // 向左移动
@@ -396,7 +429,7 @@ Page({
             // 需要判断落脚位置是否无值且中间没有其他数字格
             if (board[i][k] === 0 && !this.hasHorizontalBlock(i, k, j)) {
               // 开始移动
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, i, k)
               board[i][k] = board[i][j]
               board[i][j] = 0
               this.setData({
@@ -406,7 +439,7 @@ Page({
             }
             // 落脚处数字相等且中间无其他数字格
             else if (board[i][k] === board[i][j] && !this.hasHorizontalBlock(i, k, j)) {
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, i, k)
               if (merge[i][k] != 0) { //目标落脚点是否完成过合并
                 board[i][k + 1] = board[i][j];
                 board[i][j] = 0;
@@ -446,7 +479,7 @@ Page({
             // 需要判断落脚位置是否无值且中间没有其他数字格
             if (board[i][k] === 0 && !this.hasHorizontalBlock(i, j, k)) {
               // 开始移动
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, i, k)
               board[i][k] = board[i][j]
               board[i][j] = 0
               this.setData({
@@ -456,7 +489,7 @@ Page({
             }
             // 落脚处数字相等且中间无其他数字格
             else if (board[i][k] === board[i][j] && !this.hasHorizontalBlock(i, j, k)) {
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, i, k)
               if (merge[i][k] != 0) { //目标落脚点是否完成过合并
                 board[i][k - 1] = board[i][j];
                 board[i][j] = 0;
@@ -496,7 +529,7 @@ Page({
             // 需要判断落脚位置是否无值且中间没有其他数字格
             if (board[k][j] === 0 && !this.hasVerticalBlock(j, k, i)) {
               // 开始移动
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, k, j)
               board[k][j] = board[i][j]
               board[i][j] = 0
               this.setData({
@@ -506,7 +539,7 @@ Page({
             }
             // 落脚处数字相等且中间无其他数字格
             else if (board[k][j] === board[i][j] && !this.hasVerticalBlock(j, k, i)) {
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, k, j)
               if (merge[k][j] != 0) { //目标落脚点是否完成过合并
                 board[k + 1][j] = board[i][j];
                 board[i][j] = 0;
@@ -542,11 +575,11 @@ Page({
     for (let j = 0; j < 4; j++) {
       for (let i = 2; i >= 0; i--) {
         if (board[i][j] != 0) {
-          for (let k = 3; k > j; k--) {
+          for (let k = 3; k > i; k--) {
             // 需要判断落脚位置是否无值且中间没有其他数字格
             if (board[k][j] === 0 && !this.hasVerticalBlock(j, i, k)) {
               // 开始移动
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, k, j)
               board[k][j] = board[i][j]
               board[i][j] = 0
               this.setData({
@@ -556,7 +589,7 @@ Page({
             }
             // 落脚处数字相等且中间无其他数字格
             else if (board[k][j] === board[i][j] && !this.hasVerticalBlock(j, i, k)) {
-              // this.showMoveAnimation(i, j, i, k)
+              this.showMoveAnimation(i, j, k, j)
               if (merge[k][j] != 0) { //目标落脚点是否完成过合并
                 board[k - 1][j] = board[i][j];
                 board[i][j] = 0;

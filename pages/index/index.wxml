@@ -1,6 +1,14 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
+  <view class="snow foreground"></view>
+  <view class="snow foreground layered"></view>
+  <view class="snow middleground"></view>
+  <view class="snow middleground layered"></view>
+  <view class="snow background"></view>
+  <view class="snow background layered"></view>
+  <view class="btn" bindtap="handleGoGame">进入2048</view>
+  <image class="house" src="../../assets/house.png"></image>
+  <!-- <view class="userinfo">
     <block wx:if="{{canIUseOpenData}}">
       <view class="userinfo-avatar" bindtap="bindViewTap">
         <open-data type="userAvatarUrl"></open-data>
@@ -18,6 +26,6 @@
     </block>
   </view>
   <view class="usermotto">
-    <text class="user-motto" bindtap="handleGoGame">{{motto}}</text>
-  </view>
+    <view class="user-motto" bindtap="handleGoGame" animation="{{ani}}">{{motto}}</view>
+  </view> -->
 </view>

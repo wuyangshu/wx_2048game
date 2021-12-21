@@ -8,8 +8,8 @@
       wx:key="{{item.id}}"></view>
     <view class="character-cell"
       style="top: {{item.top}}rpx; left: {{item.left}}rpx; width: {{item.width}}; height: {{item.height}}; display: {{item.display}}; color: {{item.color}}; background-color: {{item.backgroundColor}}; "
-      wx:for="{{characterList}}" wx:key="{{item.id}}" animation="{{item.animate}}">{{ item.value }}
+      wx:for="{{characterList}}" wx:key="{{item.id}}" id="cell-{{item.id}}">{{ item.value }}
     </view>
   </view>
-  <view class="gameover" wx:if="{{gameOver}}">游戏结束</view>
+  <image class="gameover" wx:if="{{gameOver}}" src="../../assets/gameover.png"></image>
 </view>
